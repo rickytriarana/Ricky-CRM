@@ -1,0 +1,143 @@
+:root{
+  --bg:#0f172a;
+  --panel:#111b34;
+  --card:#0b1226;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --line:#24314f;
+  --primary:#3b82f6;
+  --danger:#ef4444;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+  background:linear-gradient(180deg,#0b1022,#070a14);
+  color:var(--text);
+}
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 14px; border-bottom:1px solid var(--line);
+  background:rgba(15,23,42,.75); backdrop-filter: blur(10px);
+  position:sticky; top:0; z-index:10;
+}
+.brand{display:flex; align-items:center; gap:10px}
+.logo{
+  width:34px; height:34px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(135deg,#1d4ed8,#60a5fa);
+  font-weight:700;
+}
+.appname{font-weight:700}
+.subtitle{font-size:12px; color:var(--muted)}
+.tabs{
+  display:flex; gap:6px; padding:10px 10px; border-bottom:1px solid var(--line);
+  background:rgba(15,23,42,.55); position:sticky; top:59px; z-index:9;
+}
+.tab{
+  flex:1;
+  padding:10px 8px;
+  border:1px solid var(--line);
+  background:transparent; color:var(--text);
+  border-radius:12px; cursor:pointer;
+}
+.tab.active{background:rgba(59,130,246,.18); border-color:rgba(59,130,246,.35)}
+.container{max-width:960px; margin:0 auto; padding:14px}
+.panel{display:none}
+.panel.active{display:block}
+.row{display:flex; gap:10px; align-items:center; justify-content:space-between; margin:10px 0}
+.rowcol{display:flex; flex-direction:column; gap:8px}
+.rowcol.right{align-items:flex-end}
+.label{font-size:12px; color:var(--muted)}
+.input{
+  width:100%;
+  padding:12px 12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(17,27,52,.7);
+  color:var(--text);
+}
+.inputfile{
+  width:100%;
+  padding:10px;
+  border-radius:12px;
+  border:1px dashed var(--line);
+  background:rgba(17,27,52,.35);
+  color:var(--muted);
+}
+button{
+  border:1px solid var(--line);
+  background:rgba(17,27,52,.7);
+  color:var(--text);
+  padding:12px 12px;
+  border-radius:12px;
+  cursor:pointer;
+}
+button.primary{background:rgba(59,130,246,.25); border-color:rgba(59,130,246,.45)}
+button.danger{background:rgba(239,68,68,.18); border-color:rgba(239,68,68,.45)}
+button.ghost{background:transparent}
+button:disabled{opacity:.45; cursor:not-allowed}
+.chips{display:flex; flex-wrap:wrap; gap:8px}
+.chip{
+  padding:8px 10px; border-radius:999px;
+  border:1px solid var(--line); background:transparent; cursor:pointer;
+  font-size:13px;
+}
+.chip.active{background:rgba(59,130,246,.18); border-color:rgba(59,130,246,.35)}
+.list{
+  display:flex; flex-direction:column; gap:10px;
+  margin-top:10px;
+}
+.list.compact{gap:6px}
+.item{
+  border:1px solid var(--line);
+  background:rgba(17,27,52,.55);
+  border-radius:14px;
+  padding:12px;
+  display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+}
+.itemTitle{font-weight:650}
+.itemSub{font-size:12px; color:var(--muted); margin-top:4px}
+.itemRight{display:flex; flex-direction:column; gap:8px; align-items:flex-end}
+.badge{
+  font-size:11px; color:var(--muted);
+  border:1px solid var(--line);
+  padding:4px 8px; border-radius:999px;
+}
+.card{
+  border:1px solid var(--line);
+  background:rgba(11,18,38,.6);
+  border-radius:16px;
+  padding:14px; margin:12px 0;
+}
+.cardTitle{font-weight:700}
+.cardSub{color:var(--muted); font-size:12px; margin-top:4px; line-height:1.35}
+.hint{color:var(--muted); font-size:12px; margin-top:8px}
+.empty{border:1px dashed var(--line); border-radius:16px; padding:18px; text-align:center; color:var(--muted)}
+.emptyTitle{color:var(--text); font-weight:650}
+.hidden{display:none}
+.modal{
+  position:fixed; inset:0; background:rgba(0,0,0,.55);
+  display:flex; align-items:center; justify-content:center;
+  padding:14px; z-index:100;
+}
+.modalCard{
+  width:min(720px, 100%);
+  border:1px solid var(--line);
+  background:rgba(11,18,38,.92);
+  border-radius:18px;
+  box-shadow: 0 16px 50px rgba(0,0,0,.35);
+}
+.modalHead{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 14px; border-bottom:1px solid var(--line);
+}
+.modalTitle{font-weight:750}
+.modalBody{padding:14px}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+@media (max-width:720px){.grid2{grid-template-columns:1fr}}
+.hr{height:1px; background:var(--line); margin:14px 0}
+.seg{display:flex; gap:6px}
+.segbtn{flex:1}
+.segbtn.active{background:rgba(59,130,246,.18); border-color:rgba(59,130,246,.35)}
+.small{font-size:12px; color:var(--muted)}

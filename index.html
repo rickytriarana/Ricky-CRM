@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1f2a44" />
+  <title>Arana CRM (Offline PWA)</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">A</div>
+      <div class="titles">
+        <div class="appname">Arana CRM</div>
+        <div class="subtitle">Offline (PWA) — 1 orang</div>
+      </div>
+    </div>
+    <button id="btnSync" class="ghost" title="Reload data">↻</button>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="pipeline">Pipeline</button>
+    <button class="tab" data-tab="contacts">Contacts</button>
+    <button class="tab" data-tab="closed">Closed</button>
+    <button class="tab" data-tab="settings">Settings</button>
+  </nav>
+
+  <main class="container">
+    <!-- PIPELINE -->
+    <section id="tab-pipeline" class="panel active">
+      <div class="row">
+        <div class="rowcol">
+          <div class="label">Stage</div>
+          <div id="stageChips" class="chips"></div>
+        </div>
+        <div class="rowcol right">
+          <button id="btnNewDeal" class="primary">+ Deal</button>
+        </div>
+      </div>
+      <div id="pipelineList" class="list"></div>
+      <div id="pipelineEmpty" class="empty hidden">
+        <div class="emptyTitle">Kosong di stage ini</div>
+        <div class="emptySub">Klik <b>+ Deal</b> untuk menambahkan.</div>
+      </div>
+    </section>
+
+    <!-- CONTACTS -->
+    <section id="tab-contacts" class="panel">
+      <div class="row">
+        <input id="contactSearch" class="input" placeholder="Search name/phone/email/company" />
+        <button id="btnNewContact" class="primary">+ Contact</button>
+      </div>
+      <div id="contactsList" class="list"></div>
+      <div id="contactsEmpty" class="empty hidden">
+        <div class="emptyTitle">Belum ada kontak</div>
+        <div class="emptySub">Tambahkan contact atau import CSV/VCF di Settings.</div>
+      </div>
+    </section>
+
+    <!-- CLOSED -->
+    <section id="tab-closed" class="panel">
+      <div class="row">
+        <div class="seg">
+          <button class="segbtn active" data-closed="won">Won</button>
+          <button class="segbtn" data-closed="lost">Lost</button>
+        </div>
+      </div>
+      <div id="closedList" class="list"></div>
+      <div id="closedEmpty" class="empty hidden">
+        <div class="emptyTitle">Belum ada data</div>
+        <div class="emptySub">Deal yang ditutup akan muncul di sini.</div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="tab-settings" class="panel">
+      <div class="card">
+        <div class="cardTitle">Pipeline Stages</div>
+        <div class="cardSub">Tambah / rename / reorder (custom stage)</div>
+        <div id="stagesAdmin" class="list compact"></div>
+        <div class="row">
+          <input id="newStageName" class="input" placeholder="Nama stage baru" />
+          <button id="btnAddStage" class="primary">Add</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cardTitle">Import Contacts (CSV)</div>
+        <div class="cardSub">Header disarankan: name, phone, email, company, notes</div>
+        <div class="row">
+          <input id="csvFile" type="file" accept=".csv,text/csv" class="inputfile" />
+          <button id="btnImportCsv" class="primary">Import</button>
+        </div>
+        <div class="hint">Jika CSV tanpa header, urutan kolom dianggap: name, phone, email, company, notes.</div>
+      </div>
+
+      <div class="card">
+        <div class="cardTitle">Import Contacts (VCF)</div>
+        <div class="cardSub">Langsung dari export kontak HP (.vcf / vCard). Ambil Name, Phone, Email, Company, Notes (jika ada).</div>
+        <div class="row">
+          <input id="vcfFile" type="file" accept=".vcf,text/vcard,text/x-vcard" class="inputfile" />
+          <button id="btnImportVcf" class="primary">Import</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cardTitle">Backup / Restore</div>
+        <div class="cardSub">Export JSON untuk backup, lalu restore jika pindah HP.</div>
+        <div class="row">
+          <button id="btnExport" class="primary">Export Backup (JSON)</button>
+        </div>
+        <div class="row">
+          <input id="jsonFile" type="file" accept=".json,application/json" class="inputfile" />
+          <button id="btnRestore" class="danger">Restore (overwrite)</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cardTitle">Catatan</div>
+        <div class="cardSub">
+          Ini PWA: bisa di-install di Android via Chrome: menu <b>Install app</b> / <b>Add to Home screen</b>.
+          Agar mode offline berfungsi, host via HTTPS (mis. GitHub Pages).
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modalCard">
+      <div class="modalHead">
+        <div id="modalTitle" class="modalTitle">Modal</div>
+        <button id="modalClose" class="ghost">✕</button>
+      </div>
+      <div id="modalBody" class="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
+    }
+  </script>
+</body>
+</html>
