@@ -1,13 +1,14 @@
 /**
  * Arana CRM Offline (PWA) — no server, no fees.
  * Data: IndexedDB. UI: vanilla JS.
+ * v3: Fix modal stuck on some Android by using inline display none + stronger .hidden.
  */
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
 function uid() {
-  return crypto.randomUUID ? crypto.randomUUID() :
+  return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() :
     "id-" + Math.random().toString(16).slice(2) + "-" + Date.now();
 }
 function nowMs(){ return Date.now(); }
@@ -180,7 +181,7 @@ function renderPipeline(){
       </div>
       <div class="itemRight">
         <span class="badge">OPEN</span>
-        <button class="ghost">Detail →</button>
+        <button class="ghost" type="button">Detail →</button>
       </div>
     `;
     item.querySelector("button").onclick = ()=> openDealModal(d.id);
@@ -213,7 +214,7 @@ function renderContacts(){
         <div class="itemSub">${escapeHtml(sub || "-")}</div>
       </div>
       <div class="itemRight">
-        <button class="ghost">Edit →</button>
+        <button class="ghost" type="button">Edit →</button>
       </div>
     `;
     item.querySelector("button").onclick = ()=> openContactModal(c.id);
@@ -241,7 +242,7 @@ function renderClosed(){
       </div>
       <div class="itemRight">
         <span class="badge">${badge}</span>
-        <button class="ghost">Detail →</button>
+        <button class="ghost" type="button">Detail →</button>
       </div>
     `;
     item.querySelector("button").onclick = ()=> openDealModal(d.id);
@@ -265,9 +266,9 @@ function renderStagesAdmin(){
       </div>
       <div class="itemRight">
         <div style="display:flex; gap:6px;">
-          <button class="ghost" ${i===0?"disabled":""}>↑</button>
-          <button class="ghost" ${i===stages.length-1?"disabled":""}>↓</button>
-          <button class="ghost">Rename</button>
+          <button class="ghost" type="button" ${i===0?"disabled":""}>↑</button>
+          <button class="ghost" type="button" ${i===stages.length-1?"disabled":""}>↓</button>
+          <button class="ghost" type="button">Rename</button>
         </div>
       </div>
     `;
@@ -298,12 +299,16 @@ function render(){
 }
 
 function openModal(title, html){
-  $("#modalTitle").textContent = title;
-  $("#modalBody").innerHTML = html;
-  $("#modal").classList.remove("hidden");
+  $("#modalTitle").textContent = title || "Modal";
+  $("#modalBody").innerHTML = html || "";
+  const m = $("#modal");
+  m.classList.remove("hidden");
+  m.style.display = "flex";
 }
 function closeModal(){
-  $("#modal").classList.add("hidden");
+  const m = $("#modal");
+  m.classList.add("hidden");
+  m.style.display = "none";
   $("#modalBody").innerHTML="";
 }
 
@@ -322,8 +327,8 @@ async function openContactModal(contactId=null){
     </div>
     <div class="hr"></div>
     <div class="row">
-      <button id="btnSaveContact" class="primary">Save</button>
-      <button id="btnCancel" class="ghost">Cancel</button>
+      <button id="btnSaveContact" class="primary" type="button">Save</button>
+      <button id="btnCancel" class="ghost" type="button">Cancel</button>
     </div>
   `);
 
@@ -383,8 +388,8 @@ async function openNewDealModal(){
     </div>
     <div class="hr"></div>
     <div class="row">
-      <button id="btnCreateDeal" class="primary">Create</button>
-      <button id="btnCancel" class="ghost">Cancel</button>
+      <button id="btnCreateDeal" class="primary" type="button">Create</button>
+      <button id="btnCancel" class="ghost" type="button">Cancel</button>
     </div>
   `);
 
@@ -488,7 +493,7 @@ async function openDealModal(dealId){
         <div class="itemSub">Created: ${escapeHtml(new Date(a.createdAt).toISOString())}</div>
       </div>
       <div class="itemRight">
-        <button class="ghost" data-act="${a.id}">${a.done? "✓ Done":"Mark done"}</button>
+        <button class="ghost" type="button" data-act="${a.id}">${a.done? "✓ Done":"Mark done"}</button>
       </div>
     </div>
   `).join("") : `<div class="empty"><div class="emptyTitle">No activities</div><div class="emptySub">Tambahkan call/meeting/task untuk tracking follow-up.</div></div>`;
@@ -521,7 +526,7 @@ async function openDealModal(dealId){
       </div>
       <div>
         <div class="label">Save changes</div>
-        <button id="btnSaveDeal" class="primary">Save</button>
+        <button id="btnSaveDeal" class="primary" type="button">Save</button>
       </div>
     </div>
 
@@ -536,9 +541,9 @@ async function openDealModal(dealId){
         <div>
           <div class="label">Action</div>
           <div style="display:flex; gap:8px; flex-wrap:wrap">
-            <button id="btnMoveStage" class="primary">Move</button>
-            <button id="btnWon" class="primary">Close WON</button>
-            <button id="btnLost" class="danger">Close LOST</button>
+            <button id="btnMoveStage" class="primary" type="button">Move</button>
+            <button id="btnWon" class="primary" type="button">Close WON</button>
+            <button id="btnLost" class="danger" type="button">Close LOST</button>
           </div>
         </div>
       </div>
@@ -547,13 +552,13 @@ async function openDealModal(dealId){
     <div class="hr"></div>
     <div class="row">
       <div class="cardTitle">Activities</div>
-      <button id="btnAddAct" class="primary">+ Activity</button>
+      <button id="btnAddAct" class="primary" type="button">+ Activity</button>
     </div>
     <div id="actList">${actHtml}</div>
 
     <div class="hr"></div>
     <div class="row">
-      <button id="btnClose" class="ghost">Close</button>
+      <button id="btnClose" class="ghost" type="button">Close</button>
     </div>
   `);
 
@@ -799,6 +804,10 @@ function wireUI(){
   await db.open();
   await seedIfEmpty();
   await loadCache();
+
+  // Fail-safe: some Android CSS caching makes .hidden ignored; enforce modal hidden on load.
+  try { closeModal(); } catch(e) {}
+
   wireUI();
   render();
 })();

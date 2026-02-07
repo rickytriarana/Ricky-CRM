@@ -115,7 +115,7 @@ button:disabled{opacity:.45; cursor:not-allowed}
 .hint{color:var(--muted); font-size:12px; margin-top:8px}
 .empty{border:1px dashed var(--line); border-radius:16px; padding:18px; text-align:center; color:var(--muted)}
 .emptyTitle{color:var(--text); font-weight:650}
-.hidden{display:none}
+.hidden{display:none !important;} /* critical for modal + empty states */
 .modal{
   position:fixed; inset:0; background:rgba(0,0,0,.55);
   display:flex; align-items:center; justify-content:center;

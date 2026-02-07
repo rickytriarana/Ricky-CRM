@@ -127,12 +127,12 @@
     </section>
   </main>
 
-  <!-- MODAL -->
-  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+  <!-- MODAL (fail-safe: hidden by inline style, not only CSS) -->
+  <div id="modal" class="modal hidden" style="display:none" role="dialog" aria-modal="true">
     <div class="modalCard">
       <div class="modalHead">
         <div id="modalTitle" class="modalTitle">Modal</div>
-        <button id="modalClose" class="ghost">✕</button>
+        <button id="modalClose" class="ghost" type="button">✕</button>
       </div>
       <div id="modalBody" class="modalBody"></div>
     </div>

@@ -1,4 +1,4 @@
-const CACHE = "arana-crm-pwa-v2";
+const CACHE = "arana-crm-pwa-v3";
 const ASSETS = [
   "./",
   "./index.html",
