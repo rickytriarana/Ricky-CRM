@@ -1,7 +1,7 @@
 {
   "name": "Arana CRM (Offline)",
   "short_name": "Arana CRM",
-  "start_url": "./",
+  "start_url": "./?v=4",
   "display": "standalone",
   "background_color": "#0b1022",
   "theme_color": "#1f2a44",

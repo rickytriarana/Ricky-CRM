@@ -1,9 +1,8 @@
-const CACHE = "arana-crm-pwa-v3";
+const CACHE = "arana-crm-pwa-v4";
 const ASSETS = [
   "./",
   "./index.html",
-  "./style.css",
-  "./app.js",
+  "./reset.html",
   "./manifest.webmanifest",
   "./icon-192.png",
   "./icon-512.png"
